@@ -1,10 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
-import { clientRegistry } from "../config/clients.js";
+import { clientRegistry } from "../clients.js";
 
-/**
- * Extracts client-id from `Authorization: Bearer <client-id>`.
- * Attaches validated ClientConfig to res.locals for downstream use.
- */
 export function authenticate(req: Request, res: Response, next: NextFunction): void {
     const header = req.headers["authorization"] ?? "";
 
@@ -14,8 +10,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     }
 
     const clientId = header.slice(7).trim();
-    //todo client id sanitization
-    const client   = clientRegistry[clientId];
+    const client = clientRegistry[clientId];
 
     if (!client) {
         res.status(401).json({ error: `Unknown client: ${clientId}` });
@@ -28,6 +23,6 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     }
 
     res.locals["clientId"] = clientId;
-    res.locals["client"]   = client;
+    res.locals["client"] = client;
     next();
 }

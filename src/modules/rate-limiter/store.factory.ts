@@ -1,10 +1,22 @@
-import { MemoryStore }   from "./stores/memory.store.js";
+import type { Pool } from "pg";
+import type { StorageStrategy } from "./clients.js";
+import type { IStore } from "./stores/store.interface.js";
+import { MemoryStore } from "./stores/memory.store.js";
 import { PostgresStore } from "./stores/postgres.store.js";
 
-// singleton on app restart to have changes impact
-const memoryStore = new MemoryStore();
+let memoryInstance: MemoryStore | null = null;
+let postgresInstance: PostgresStore | null = null;
 
-export function resolveStore(strategy: any, pool: any): any {
-    if (strategy === "postgres") return new PostgresStore(pool);
-    return memoryStore;
+export function resolveStore(strategy: StorageStrategy, pool: Pool): IStore {
+    if (strategy === "postgres") {
+        if (!postgresInstance) {
+            postgresInstance = new PostgresStore(pool);
+        }
+        return postgresInstance;
+    }
+
+    if (!memoryInstance) {
+        memoryInstance = new MemoryStore();
+    }
+    return memoryInstance;
 }
