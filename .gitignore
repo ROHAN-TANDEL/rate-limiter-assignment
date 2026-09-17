@@ -365,5 +365,82 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/webstorm
 
+# Generated .gitignore file for: Node, JavaScript, TypeScript, React, Angular, Express, IntelliJ, JetBrains, macOS, npm, Vite, PostgreSQL, Docker, GitHub Actions
+# Created with FOSSA's DevOps Tools
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+.env
+.DS_Store
+dist/
+.cache/
+coverage/
+
+# JavaScript
+# Add JavaScript-specific ignores here
+
+# TypeScript
+# Add TypeScript-specific ignores here
+
+# React
+node_modules/
+build/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Angular
+# Add Angular-specific ignores here
+
+# Express
+# Add Express-specific ignores here
+
+# IntelliJ
+# Add IntelliJ-specific ignores here
+
+# JetBrains
+# Add JetBrains-specific ignores here
+
+# macOS
+# Add macOS-specific ignores here
+
+# npm
+# Add npm-specific ignores here
+
+# Vite
+# Add Vite-specific ignores here
+
+# PostgreSQL
+# Add PostgreSQL-specific ignores here
+
+# Docker
+docker-compose.override.yml
+Dockerfile.override
+.dockerignore
+
+# GitHub Actions
+# Add GitHub Actions-specific ignores here
+
+# Common
+.DS_Store
+Thumbs.db
+*.log
+*.bak
+*.tmp
+*.swp
+*~
+
+# IDE and editor generated files
+.idea/
+*.sublime-*
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+
 
 # End of https://www.toptal.com/developers/gitignore/api/node,laravel,git,react,angular,java
