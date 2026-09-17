@@ -7,6 +7,8 @@ export default class Connect {
         return new Pool({
             ...creds,
             options: schema ? `-c search_path=${schema}` : undefined,
+            max: 20,
+            idleTimeoutMillis: 30000,
         });
     }
 }

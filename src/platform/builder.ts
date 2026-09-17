@@ -1,4 +1,4 @@
-import express, { Express } from "express";
+import express, { type Express } from "express";
 import env from "../config/env.js";
 import Connect from "./connect.js";
 import { StartServer, StopServer } from "./server.js";
@@ -13,7 +13,7 @@ export class Builder {
     buildServer() {
         return {
             start: new StartServer(),
-            stop:  new StopServer(),
+            stop: new StopServer(),
         };
     }
 

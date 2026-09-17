@@ -1,8 +1,9 @@
+import type { Server } from "http";
 import config from "../config/server.js";
 import env from "../config/env.js";
 
 export class StartServer {
-    connect(app: any) {
+    connect(app: any): Server {
         const port = env.app_port;
         return app.listen(port, () => {
             console.info({ server_start_status: `Server started on port ${port}` });
@@ -19,36 +20,39 @@ export class StopServer {
         return this;
     }
 
-    connect(httpServer?: any) {
-        console.info({ server_stop_status: "Registering graceful shutdown..." });
-
+    connect(httpServer?: Server): void {
         if (httpServer) {
-            httpServer.requestTimeout    = config.http_request_timeout_ms;
-            httpServer.headersTimeout    = config.http_headers_timeout_ms;
-            httpServer.keepAliveTimeout  = config.http_keep_alive_timeout_ms;
+            httpServer.requestTimeout = config.http_request_timeout_ms;
+            httpServer.headersTimeout = config.http_headers_timeout_ms;
+            httpServer.keepAliveTimeout = config.http_keep_alive_timeout_ms;
         }
 
         const handleSignal = (signal: string) => {
             if (this.isShuttingDown) return;
             this.isShuttingDown = true;
-            console.info({ signal, shutdown: "Graceful shutdown started" });
+            console.info({ signal, shutdown: "Graceful shutdown initiated" });
             this.shutdown(httpServer);
         };
 
-        process.on("SIGINT",  () => handleSignal("SIGINT"));
+        process.on("SIGINT", () => handleSignal("SIGINT"));
         process.on("SIGTERM", () => handleSignal("SIGTERM"));
-        process.once("unhandledRejection", (err) => { console.error({ err }); this.shutdown(httpServer); });
-        process.once("uncaughtException",  (err) => { console.error({ err }); this.shutdown(httpServer); });
     }
 
-    private shutdown(server?: any) {
-        const forceExit = setTimeout(() => { console.error("Shutdown timed out. Forcing exit."); process.exit(1); }, 10_000);
+    private shutdown(server?: Server): void {
+        const forceExit = setTimeout(() => {
+            console.error("Shutdown timed out. Forcing exit.");
+            process.exit(1);
+        }, 10_000);
         forceExit.unref();
 
         const finish = async () => {
             for (const task of this.tasks) {
-                try   { await task.cleanup(); console.info({ cleaned: task.name }); }
-                catch (e) { console.error({ cleanup_error: task.name, e }); }
+                try {
+                    await task.cleanup();
+                    console.info({ cleaned: task.name });
+                } catch (e) {
+                    console.error({ cleanup_error: task.name, error: e });
+                }
             }
             clearTimeout(forceExit);
             process.exit(0);

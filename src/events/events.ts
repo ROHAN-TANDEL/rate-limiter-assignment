@@ -1,9 +1,9 @@
 export interface RateLimitExceededEvent {
-    type:      "RateLimitExceeded";
-    clientId:  string;
-    endpoint:  string;
+    type: "RateLimitExceeded";
+    clientId: string;
+    endpoint: string;
     algorithm: string;
-    storage:   string;
+    storage: string;
     timestamp: number;
 }
 
