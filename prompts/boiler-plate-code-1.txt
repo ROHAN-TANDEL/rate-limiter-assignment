@@ -1,0 +1,44 @@
+prompt 1:
+you are a senior dev inpector
+using with token usage perform following actions:
+
+actions:
+1. read files and file structures
+2. update the file structure with minimum code and possible static code
+
+
+file has main folder src
+and src have respective folder and files
+
+each file has psudo code as to do what
+
+generate functions
+with minimal static code for each file
+
+1. code should be orchestated correctly
+2. entry point of the app is server.ts and then app.ts
+3. app.ts builder and context should correctly be handled with static code
+4. share the hints, suggestions and minimal changes to make
+
+and revalidate the changes made
+
+
+prompt 2:
+you are a senior dev inpector
+using with token usage perform following actions:
+
+actions:
+1. validate the changes made
+2. update following code provided without impct on file structure
+
+you are provided with working:
+1. server start and stop code - goes in platform
+2. db connect code - goes in platform
+3. routes code - goes in routes
+4. global middleware code - goes in server
+5. config orchestration and .env file design - goes in config
+6. handling of auth code in minimal changes possible - goes in auth
+
+update the respective code, suggest a request and data flow
+
+and wait for my inputs to approve

@@ -1,0 +1,19 @@
+prompt 2:
+you are a senior dev inpector
+using with token usage perform following actions:
+
+actions:
+1. validate the changes made
+2. update following code provided without impct on file structure
+
+you are provided with working:
+1. server start and stop code - goes in platform
+2. db connect code - goes in platform
+3. routes code - goes in routes
+4. global middleware code - goes in server
+5. config orchestration and .env file design - goes in config
+6. handling of auth code in minimal changes possible - goes in auth
+
+update the respective code, suggest a request and data flow
+
+and wait for my inputs to approve
