@@ -17,4 +17,6 @@ const platform = build.buildServer();
 // Register DB pool teardown on graceful shutdown
 platform.stop.register("PostgresPool", () => db.end());
 
+app.disable('x-powered-by');
+
 export { app, platform };

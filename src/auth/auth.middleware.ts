@@ -14,6 +14,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     }
 
     const clientId = header.slice(7).trim();
+    //todo client id sanitization
     const client   = clientRegistry[clientId];
 
     if (!client) {
