@@ -1,0 +1,35 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      APP_PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: rate_limiter
+      DB_SCHEMA: public
+      DB_USER: root
+      DB_PASSWORD: root123
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: rate_limiter
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root123
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U root -d rate_limiter"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
