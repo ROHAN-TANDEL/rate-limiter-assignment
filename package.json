@@ -4,7 +4,13 @@
   "description": "A Node.js / Express / TypeScript API demonstrating API throttling with two rate-limiting algorithms, two storage strategies, and per-client configurable policies.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch src/server.ts",
+    "dev:inspect": "tsx watch --inspect src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "start:prod": "npm run build && node dist/server.js",
+    "clean": "rm -rf dist",
+    "test": "jest --runInBand"
   },
 
   "dependencies": {

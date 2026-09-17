@@ -1,7 +1,12 @@
-export class Connect {
-    // function pool
+import { Pool } from "pg";
+import db from "../config/database.js";
 
-    // connect and return pgsql pool
-
-
+export default class Connect {
+    pool(): Pool {
+        const { schema, ...creds } = db;
+        return new Pool({
+            ...creds,
+            options: schema ? `-c search_path=${schema}` : undefined,
+        });
+    }
 }
