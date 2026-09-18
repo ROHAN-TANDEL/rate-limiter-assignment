@@ -13,6 +13,11 @@ export class MemoryStore implements IStore {
         setInterval(() => this.purgeExpired(), 30_000).unref();
     }
 
+    // TODO(platform): atomicUpdate is async but has no per-key serialisation. Two concurrent
+    // requests for the same key can both read stale state before either write completes —
+    // a real race condition under load even in single-threaded Node.js, because `await` yields
+    // the event loop between the read and the write. Fix: chain updates for the same key onto
+    // a per-key promise queue so each update awaits the previous one before reading.
     async atomicUpdate<T>(
         key: string,
         ttlMs: number,

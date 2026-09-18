@@ -28,6 +28,10 @@ export function rateLimiter(endpoint: "foo" | "bar", pool: Pool) {
             res.setHeader("X-RateLimit-Reset", Math.ceil(result.resetAt / 1000));
 
             if (!result.allowed) {
+                // TODO(platform): Add a Retry-After header (RFC 7231 §7.1.3) so clients
+                // doing standards-compliant backoff know exactly when to retry:
+                //   const retryAfterSecs = Math.max(1, Math.ceil((result.resetAt - Date.now()) / 1000));
+                //   res.setHeader("Retry-After", retryAfterSecs);
                 publisher.publish({
                     type: "RateLimitExceeded",
                     clientId,

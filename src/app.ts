@@ -12,7 +12,10 @@ const db = build.buildDB();
 const app = build.buildMiddlewares(appServer);
 const context = { db };
 
-// Pre-initialize schema before traffic starts
+// TODO(platform): initSchema() is called fire-and-forget — if the DB is unreachable or
+// the migration fails, the app starts anyway and the first Postgres write will throw.
+// This should be awaited and block startup. Extract app bootstrap into an async init()
+// function and call it from server.ts: init().then(startHttpServer).catch(process.exit).
 const pgStore = resolveStore("postgres", db) as PostgresStore;
 pgStore.initSchema();
 

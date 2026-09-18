@@ -15,6 +15,11 @@ export interface ClientConfig {
     bar: EndpointPolicy;
 }
 
+// TODO(platform): Client registry is hardcoded in source — onboarding/offboarding a client
+// or changing a limit requires a code change and full redeploy. Externalise this to a JSON
+// config file (e.g. clients.config.json) loaded at startup via an env-var path, validated
+// with Zod, so changes only need a config update + restart. Consider a hot-reload mechanism
+// (DB-backed config with polling, or a pub/sub invalidation signal) for zero-downtime updates.
 export const clientRegistry: Record<string, ClientConfig> = {
     "client-1": {
         enabled: true,

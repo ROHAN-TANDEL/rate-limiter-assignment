@@ -59,6 +59,12 @@ export class StopServer {
         };
 
         if (server?.close) {
+            // TODO(platform): server.close() stops new connections but cleanup tasks
+            // (db.end, etc.) run immediately after the last *accepted* connection closes —
+            // not after all in-flight async work (e.g. atomicUpdate holding a DB connection)
+            // completes. To fully drain, track in-flight request count with a counter
+            // incremented in a middleware and decremented in res.on("finish"), then only
+            // call finish() once the counter reaches zero inside the close callback.
             server.close(() => finish());
         } else {
             finish();

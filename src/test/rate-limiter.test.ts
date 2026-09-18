@@ -20,7 +20,7 @@ describe("API Rate Limiter Verification", () => {
                 .get("/foo")
                 .set("Authorization", "bearer client-1");
             expect(res.status).toBe(200);
-            expect(res.body).toEqual({ succes: true });
+            expect(res.body).toEqual({ success: true });
         }
 
         // 6th request triggers rate limit
@@ -38,7 +38,7 @@ describe("API Rate Limiter Verification", () => {
                 .get("/foo")
                 .set("Authorization", "bearer client-2");
             expect(res.status).toBe(200);
-            expect(res.body).toEqual({ succes: true });
+            expect(res.body).toEqual({ success: true });
         }
 
         const blockedRes = await request(app)
