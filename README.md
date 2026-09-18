@@ -590,6 +590,22 @@ These are intentionally outside the core implementation so that the assignment r
 - Jest
 - AWS-compatible event-driven architecture
 
+
+## Demo screens:
+client 3 with 20 concurrant bursts of 5 in loop - more details under scripts/ folder
+![Alt test screens for client-3 with 20 concurrant in burst of 5](demo/client3-foo-20-concurrant-req-in-5-burst.png)
+
+additional images:
+test screens with postman rate limit headers
+![Alt test screens with postman rate limit headers](demo/ss_1.png)
+
+![Alt test screens](demo/ss_2.png)
+
+![Alt test screens](demo/ss_3.png)
+
+### add new client (client-3):
+[![Watch the Demo](<img width="1116" height="365" alt="Screenshot 2026-09-18 at 11 41 37 AM" src="https://github.com/user-attachments/assets/7876062c-cdcb-4745-82be-e546a25986e5" />)](https://github.com/user-attachments/assets/6e16863c-b1f7-4943-9349-bb314330fe73)
+
 ##
 ##
 ##
