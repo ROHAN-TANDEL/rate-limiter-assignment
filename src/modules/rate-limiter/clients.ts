@@ -18,12 +18,12 @@ export interface ClientConfig {
 export const clientRegistry: Record<string, ClientConfig> = {
     "client-1": {
         enabled: true,
-        foo: { enabled: true, algorithm: "token-bucket", limit: 5, windowMs: 10_000, storage: "memory" },
-        bar: { enabled: true, algorithm: "sliding-window", limit: 10, windowMs: 10_000, storage: "postgres" },
+        foo: { enabled: true, algorithm: "token-bucket", limit: 5, windowMs: 1_000, storage: "memory" },
+        bar: { enabled: true, algorithm: "sliding-window", limit: 5, windowMs: 1_000, storage: "postgres" },
     },
     "client-2": {
         enabled: true,
-        foo: { enabled: true, algorithm: "token-bucket", limit: 2, windowMs: 10_000, storage: "postgres" },
-        bar: { enabled: true, algorithm: "sliding-window", limit: 4, windowMs: 10_000, storage: "memory" },
+        foo: { enabled: true, algorithm: "token-bucket", limit: 2, windowMs: 1_000, storage: "postgres" },
+        bar: { enabled: true, algorithm: "sliding-window", limit: 4, windowMs: 1_000, storage: "memory" },
     },
 };

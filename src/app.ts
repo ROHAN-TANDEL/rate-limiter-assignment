@@ -14,7 +14,7 @@ const context = { db };
 
 // Pre-initialize schema before traffic starts
 const pgStore = resolveStore("postgres", db) as PostgresStore;
-await pgStore.initSchema();
+pgStore.initSchema();
 
 Routes.register(app, context);
 

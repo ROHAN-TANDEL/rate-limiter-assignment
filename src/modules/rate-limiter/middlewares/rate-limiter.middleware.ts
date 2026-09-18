@@ -41,8 +41,26 @@ export function rateLimiter(endpoint: "foo" | "bar", pool: Pool) {
             }
 
             next();
-        } catch (err) {
-            next(err);
+        } catch (err:any) {
+            // Log the DB degradation
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            const errorCode = err?.code ?? "UNKNOWN_DB_ERROR";
+
+            console.error({
+                rate_limiter_fault: "Storage failure during rate limit check",
+                storage: policy.storage,
+                code: errorCode,
+                error: errorMessage || "Database connection dropped/unavailable",
+            });
+
+            // FAIL-OPEN STRATEGY:
+            // Allow the request to proceed so users aren't broken by a rate-limiter hiccup
+            res.setHeader("X-RateLimit-Status", "bypassed-storage-error");
+            // global middleware to catch errors is needed next(err)
+            next();
+
+            // FAIL-CLOSED STRATEGY ALTERNATIVE:
+            // res.status(503).json({ error: "Rate limiting service temporarily unavailable" });
         }
     };
 }

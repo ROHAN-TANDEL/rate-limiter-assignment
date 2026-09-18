@@ -1,0 +1,1 @@
+for i in {1..100}; do  node scripts/client2-foo-concurrant-script-runners.ts; done

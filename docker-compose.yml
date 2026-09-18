@@ -7,7 +7,7 @@ services:
       APP_PORT: 3000
       DB_HOST: postgres
       DB_PORT: 5432
-      DB_NAME: rate_limiter
+      DB_NAME: rate_limit_states
       DB_SCHEMA: public
       DB_USER: root
       DB_PASSWORD: root123
@@ -18,7 +18,7 @@ services:
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: rate_limiter
+      POSTGRES_DB: rate_limit_states
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root123
     ports:

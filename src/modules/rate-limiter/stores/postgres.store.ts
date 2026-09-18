@@ -27,14 +27,16 @@ export class PostgresStore implements IStore {
     ): Promise<StoreUpdateResult<T>> {
         await this.initSchema();
         const client: PoolClient = await this.pool.connect();
+        let isCorrupted = false;
 
         try {
             await client.query("BEGIN");
             const now = Date.now();
 
-            // Lock the single row for this key to prevent race conditions
+            await client.query(`SELECT pg_advisory_xact_lock(hashtext($1))`, [key]);
+
             const selectRes = await client.query<{ data: T; expires_at: string }>(
-                `SELECT data, expires_at FROM rate_limit_states WHERE key = $1 FOR UPDATE`,
+                `SELECT data, expires_at FROM rate_limit_states WHERE key = $1`,
                 [key]
             );
 
@@ -48,24 +50,25 @@ export class PostgresStore implements IStore {
 
             await client.query(
                 `INSERT INTO rate_limit_states (key, data, expires_at)
-                 VALUES ($1, $2, $3)
-                     ON CONFLICT (key) DO UPDATE
-                                              SET data = EXCLUDED.data, expires_at = EXCLUDED.expires_at`,
+             VALUES ($1, $2, $3)
+             ON CONFLICT (key) DO UPDATE
+             SET data = EXCLUDED.data, expires_at = EXCLUDED.expires_at`,
                 [key, JSON.stringify(result.data), expiresAt]
             );
-
-            // Housekeeping: delete expired rows with small probability
-            if (Math.random() < 0.05) {
-                await client.query(`DELETE FROM rate_limit_states WHERE expires_at <= $1`, [now]);
-            }
 
             await client.query("COMMIT");
             return result;
         } catch (error) {
-            await client.query("ROLLBACK");
+            isCorrupted = true; // Mark client as broken so it gets destroyed
+            try {
+                await client.query("ROLLBACK");
+            } catch {
+                // Ignore rollback failure on dead sockets
+            }
             throw error;
         } finally {
-            client.release();
+            // Passing true evicts this connection from the pool so it isn't reused
+            client.release(isCorrupted);
         }
     }
 }
