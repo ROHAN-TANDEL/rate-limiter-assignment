@@ -1,1 +1,1 @@
-for i in {1..100}; do  node scripts/client2-bar-concurrant-script-runners.ts; done
+for i in {1..5}; do  node scripts/client2-bar-concurrant-script-runners.ts; done
